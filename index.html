@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Explore Life</title>
+  <link rel="stylesheet" href="style.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+  <style>
+    .hidden {
+      display: none;
+    }
+    nav {
+      background-color: #4CAF50;
+      color: white;
+      padding: 1rem;
+      font-size: 1.5rem;
+    }
+    section {
+      margin: 2rem;
+    }
+    button {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>🌍 Explore Life</nav>
+
+  <section id="booking">
+    <h2>Select Your Destination</h2>
+    <p>
+      <label for="visitor-name">Your Name:</label>
+      <input type="text" id="visitor-name" placeholder="Enter your name"/>
+    </p>
+    <select id="destination">
+      <option value="" disabled selected>Select a destination</option>
+      <option value="Taj Mahal">Taj Mahal, Agra</option>
+      <option value="Jaipur">Jaipur - Pink City</option>
+      <option value="Goa">Goa - Beaches & Parties</option>
+      <option value="Kerala">Kerala - Backwaters & Nature</option>
+      <option value="Ladakh">Ladakh - Mountains & Monasteries</option>
+      <option value="Vijayawada">Vijayawada - Vision 2047</option>
+      <option value="Visakhapatnam">Visakhapatnam - City of Destiny</option>
+    </select>
+    <button onclick="showDetails()">Proceed</button>
+  </section>
+
+  <section id="details" class="hidden">
+    <h2>Destination Details</h2>
+    <p><strong>Visitor:</strong> <span id="visitor-name-display"></span></p>
+    <p><strong>Destination:</strong> <span id="place-name"></span></p>
+    <p><strong>Ticket Price:</strong> ₹<span id="ticket-price"></span></p>
+    <h3>Places to Visit:</h3>
+    <ul id="nearby-places"></ul>
+    <button onclick="showPayment()">Proceed to Payment</button>
+  </section>
+
+  <section id="payment" class="hidden">
+    <h2>Scan QR Code to Pay</h2>
+    <div id="qr-container"></div>
+    <p>Scan the QR code and complete the payment.</p>
+    <button onclick="generateFinalTicket()">OK</button>
+  </section>
+
+  <section id="final-ticket" class="hidden">
+    <h2>Your E-Ticket</h2>
+    <div id="ticket-container"></div>
+    <p>Scan this ticket at the entrance.</p>
+  </section>
+
+  <script>
+    const destinations = {
+      "Taj Mahal": {
+        price: 5000,
+        places: ["Agra Fort", "Mehtab Bagh", "Fatehpur Sikri"]
+      },
+      "Jaipur": {
+        price: 4000,
+        places: ["Hawa Mahal", "Amer Fort", "City Palace"]
+      },
+      "Goa": {
+        price: 3500,
+        places: ["Baga Beach", "Dudhsagar Falls", "Fort Aguada"]
+      },
+      "Kerala": {
+        price: 4500,
+        places: ["Alleppey Backwaters", "Munnar Hills", "Kumarakom Bird Sanctuary"]
+      },
+      "Ladakh": {
+        price: 6000,
+        places: ["Pangong Lake", "Magnetic Hill", "Leh Palace"]
+      },
+      "Vijayawada": {
+        price: 6000,
+        places: ["Undavalli caves", "Gowtham Buddha statue", "Kanaka Durga Temple"]
+      },
+      "Visakhapatnam": {
+        price: 4000,
+        places: ["RK beach", "Kailasagiri", "Rushikonda beach"]
+      },
+    };
+
+    function showDetails() {
+      let name = document.getElementById("visitor-name").value.trim();
+      let destination = document.getElementById("destination").value;
+
+      if (!name) return alert("Please enter your name!");
+      if (!destination) return alert("Please select a destination!");
+
+      document.getElementById("visitor-name-display").innerText = name;
+      document.getElementById("place-name").innerText = destination;
+      document.getElementById("ticket-price").innerText = destinations[destination].price;
+
+      let placesList = document.getElementById("nearby-places");
+      placesList.innerHTML = destinations[destination].places
+        .map(place => `<li>${place}</li>`)
+        .join("");
+
+      document.getElementById("booking").classList.add("hidden");
+      document.getElementById("details").classList.remove("hidden");
+    }
+
+    function showPayment() {
+      let name = document.getElementById("visitor-name").value.trim();
+      let destination = document.getElementById("place-name").innerText;
+      let price = document.getElementById("ticket-price").innerText;
+
+      let qr = new QRious({
+        value: `Payment for ${name} - ${destination}, ₹${price}`,
+        size: 200
+      });
+
+      let qrContainer = document.getElementById("qr-container");
+      qrContainer.innerHTML = "";
+      qrContainer.appendChild(qr.canvas);
+
+      document.getElementById("details").classList.add("hidden");
+      document.getElementById("payment").classList.remove("hidden");
+    }
+
+    function generateFinalTicket() {
+      let name = document.getElementById("visitor-name").value.trim();
+      let destination = document.getElementById("place-name").innerText;
+      let price = document.getElementById("ticket-price").innerText;
+
+      let qr = new QRious({
+        value: `E-Ticket for ${name}: ${destination}, Price: ₹${price}`,
+        size: 200
+      });
+
+      let ticketContainer = document.getElementById("ticket-container");
+      ticketContainer.innerHTML = "";
+      ticketContainer.appendChild(qr.canvas);
+
+      document.getElementById("payment").classList.add("hidden");
+      document.getElementById("final-ticket").classList.remove("hidden");
+    }
+  </script>
+
+</body>
+</html>
