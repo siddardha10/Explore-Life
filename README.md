@@ -34,7 +34,7 @@ As part of our entrepreneurial journey, this project:
 
 ## 🌐 Live Demo
 
-👉 [Click here to explore the website](https://your-username.github.io/explore-life/)
+👉 [Click here to explore the website](https://siddardha10.github.io/Explore-Life/)
 
 ## 📫 Contact
 
