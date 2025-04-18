@@ -43,3 +43,5 @@ Feel free to connect via email at: `dvsnss2005@gmail.com`
 ---
 
 This project is part of an entrepreneurial venture and is currently in its MVP stage.
+
+## It is just a prototype and not fully developed
